@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.PersistenceException;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -69,12 +70,16 @@ public class Glacier extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String name, String[] args) {
         if(command.getName().equalsIgnoreCase("freeze")) {
-            if(frozenPlayers.contains(sender.getName())) {
-                frozenPlayers.remove(sender.getName());
-                sender.sendMessage("You're no longer placing frozen blocks.");
+            if(config.ALLOW_TOGGLE) {
+                if(frozenPlayers.contains(sender.getName())) {
+                    frozenPlayers.remove(sender.getName());
+                    sender.sendMessage(ChatColor.AQUA + "You're no longer placing frozen blocks.");
+                } else {
+                    frozenPlayers.add(sender.getName());
+                    sender.sendMessage(ChatColor.AQUA + "You're now placing frozen blocks.");
+                }
             } else {
-                frozenPlayers.add(sender.getName());
-                sender.sendMessage("You're now placing frozen blocks.");
+                sender.sendMessage(ChatColor.RED + "You're not allowed to change your freeze mode!");
             }
         }
         
