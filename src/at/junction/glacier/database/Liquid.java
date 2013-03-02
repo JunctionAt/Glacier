@@ -15,10 +15,10 @@ public class Liquid implements Serializable {
     private int id;
     
     @NotNull
-    private String world;
+    private int x, y, z;
     
     @NotNull
-    private double x, y, z;
+    private String world;
     
     
     public void setId(int id) {
@@ -29,35 +29,35 @@ public class Liquid implements Serializable {
         return id;
     }
     
+    public void setX(int x) {
+        this.x = x;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    public int getY() {
+        return y;
+    }
+    
+    public void setZ(int z) {
+        this.z = z;
+    }
+    
+    public int getZ() {
+        return z;
+    }
+    
     public void setWorld(String world) {
         this.world = world;
     }
     
     public String getWorld() {
         return world;
-    }
-    
-    public void setX(double x) {
-        this.x = x;
-    }
-    
-    public double getX() {
-        return x;
-    }
-    
-    public void setY(double y) {
-        this.y = y;
-    }
-    
-    public double getY() {
-        return y;
-    }
-    
-    public void setZ(double z) {
-        this.z = z;
-    }
-    
-    public double getZ() {
-        return z;
     }
 }

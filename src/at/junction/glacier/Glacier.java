@@ -98,7 +98,7 @@ public class Glacier extends JavaPlugin {
     
     public void delFrozen(Location loc) {
         frozenBlocks.remove(loc);
-        lt.delFrozen(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ());
+        lt.delFrozen(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
     
     public boolean hasRegion(Block block) {

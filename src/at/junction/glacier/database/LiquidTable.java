@@ -17,7 +17,7 @@ public class LiquidTable {
         plugin.getDatabase().save(liquid);
     }
     
-    public void newFrozen(String world, double x, double y, double z) {
+    public void newFrozen(String world, int x, int y, int z) {
         Liquid frozen = new Liquid();
         frozen.setWorld(world);
         frozen.setX(x);
@@ -26,7 +26,7 @@ public class LiquidTable {
         save(frozen);
     }
     
-    public void delFrozen(String world, double x, double y, double z) {
+    public void delFrozen(String world, int x, int y, int z) {
         Query<Liquid> query = plugin.getDatabase().find(Liquid.class).where().eq("world", world).eq("x", x).eq("y", y).eq("z", z).setMaxRows(1);
         plugin.getDatabase().delete(query.findUnique());
     }
