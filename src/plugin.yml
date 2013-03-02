@@ -1,0 +1,14 @@
+name: Glacier
+version: 1.4.7-1
+description: Multiplayer-friendly liquids.
+author: SyntaxNode
+website: http://junction.at/
+
+main: at.junction.glacier.Glacier
+database: true
+softdepend: [WorldGuard]
+
+permissions:
+  glacier.flowing:
+    description: Allows a player to place flowing liquids.
+    default: false
