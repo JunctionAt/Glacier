@@ -70,7 +70,6 @@ public class Glacier extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String name, String[] args) {
         if(command.getName().equalsIgnoreCase("freeze")) {
-            if(config.ALLOW_TOGGLE) {
                 if(frozenPlayers.contains(sender.getName())) {
                     frozenPlayers.remove(sender.getName());
                     sender.sendMessage(ChatColor.AQUA + "You're no longer placing frozen blocks.");
@@ -78,11 +77,7 @@ public class Glacier extends JavaPlugin {
                     frozenPlayers.add(sender.getName());
                     sender.sendMessage(ChatColor.AQUA + "You're now placing frozen blocks.");
                 }
-            } else {
-                sender.sendMessage(ChatColor.RED + "You're not allowed to change your freeze mode!");
-            }
         }
-        
         return true;
     }
     

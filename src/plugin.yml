@@ -6,9 +6,19 @@ website: http://junction.at/
 
 main: at.junction.glacier.Glacier
 database: true
-softdepend: [WorldGuard]
+depend: [WorldGuard]
+
+commands:
+  freeze:
+    description: Toggle between static and flowing water blocks.
+    permission: glacier.toggle
+    usage: |
+      /freeze
 
 permissions:
   glacier.flowing:
     description: Allows a player to place flowing liquids.
     default: false
+  glacier.toggle:
+    description: Allows a player to toggle between static and flowing water blocks.
+    default: true
