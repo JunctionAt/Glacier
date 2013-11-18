@@ -1,0 +1,9 @@
+language: java
+notifications:
+  webhooks:
+    urls:
+      - "http://n.tkte.ch/h/1744/daSuQ4cOEEC0_37eDi37Px0I"
+    on_success: always
+    on_failure: always
+    on_start: false
+  email: false
