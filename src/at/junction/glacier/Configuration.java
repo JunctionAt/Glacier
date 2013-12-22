@@ -1,10 +1,10 @@
 package at.junction.glacier;
 
 class Configuration {
-    Glacier plugin;
+    private final Glacier plugin;
     
     public boolean FREEZE_LAVA;
-    public boolean ALLOW_TOGGLE;
+    private boolean ALLOW_TOGGLE;
     
     public Configuration(Glacier plugin) {
         this.plugin = plugin;
