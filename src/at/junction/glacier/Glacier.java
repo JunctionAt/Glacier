@@ -102,20 +102,12 @@ public class Glacier extends JavaPlugin {
     }
     
     public boolean hasRegion(Block block) {
-        if(wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).size() != 0;
     }
     
     public boolean isBlockRegionMember(Block block, String player) {
         LocalPlayer pl = wg.wrapPlayer(getServer().getPlayer(player));
-        if(wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).isMemberOfAll(pl)) {
-            return true;
-        } else {
-            return false;
-        }
+        return wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).isMemberOfAll(pl);
     }
     
     public boolean canFlowInRegion(Block fromBlock, Block toBlock) { // There has *got* to be a better way... Calling all pull requests.
@@ -131,10 +123,7 @@ public class Glacier extends JavaPlugin {
         for(ProtectedRegion p : toRegions) {
             tIDs.add(p.getId());
         }
-        
-        if(fIDs.equals(tIDs)) {
-            return true;
-        }
-        return false;
+
+        return fIDs.equals(tIDs);
     }
 }
