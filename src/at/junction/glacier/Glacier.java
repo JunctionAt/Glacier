@@ -21,12 +21,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Glacier extends JavaPlugin {
     
-    private final GlacierListener listener = new GlacierListener(this);
-    final Configuration config = new Configuration(this);
-    private final LiquidTable lt = new LiquidTable(this);
+    GlacierListener listener = new GlacierListener(this);
+    Configuration config = new Configuration(this);
+    LiquidTable lt = new LiquidTable(this);
     List<Location> frozenBlocks = new ArrayList<>();
-    final List<String> frozenPlayers = new ArrayList<>();
-    private WorldGuardPlugin wg;
+    List<String> frozenPlayers = new ArrayList<>();
+    WorldGuardPlugin wg;
     
     @Override
     public void onEnable() {
@@ -49,7 +49,7 @@ public class Glacier extends JavaPlugin {
         
     }
     
-    boolean setupDatabase() {
+    public boolean setupDatabase() {
         try {
             getDatabase().find(Liquid.class).findRowCount();
         } catch(PersistenceException ex) {

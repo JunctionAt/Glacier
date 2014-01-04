@@ -10,10 +10,9 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.material.Dispenser;
 
-@SuppressWarnings("ALL")
 class GlacierListener implements Listener {
     
-    private final Glacier plugin;
+    Glacier plugin;
 
     public GlacierListener(Glacier plugin) {
         this.plugin = plugin;

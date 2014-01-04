@@ -7,13 +7,13 @@ import java.util.List;
 import org.bukkit.Location;
 
 public class LiquidTable {
-    private final Glacier plugin;
+    Glacier plugin;
     
     public LiquidTable(Glacier plugin) {
         this.plugin = plugin;
     }
     
-    void save(Liquid liquid) {
+    public void save(Liquid liquid) {
         plugin.getDatabase().save(liquid);
     }
     
