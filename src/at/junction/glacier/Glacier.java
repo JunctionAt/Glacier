@@ -49,13 +49,15 @@ public class Glacier extends JavaPlugin {
         
     }
     
-    void setupDatabase() {
+    boolean setupDatabase() {
         try {
             getDatabase().find(Liquid.class).findRowCount();
         } catch(PersistenceException ex) {
             getLogger().log(Level.INFO, "First run, initializing database.");
             installDDL();
+            return true;
         }
+        return false;
     }
     
     @Override
