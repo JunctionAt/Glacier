@@ -106,7 +106,7 @@ class GlacierListener implements Listener {
         if(plugin.frozenPlayers.contains(event.getPlayer().getName()) || (!plugin.hasRegion(event.getBlockClicked().getRelative(event.getBlockFace())) || !plugin.isBlockRegionMember(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName())) && !event.getPlayer().hasPermission("glacier.flowing")) {
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
         } else {
-            if (plugin.frozenBlocks.get(event.getBlockClicked().getWorld()).contains(plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation()))){
+            if (plugin.frozenBlocks.get(event.getBlockClicked().getWorld().getName()).contains(plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation()))){
                 plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
             }
         }
