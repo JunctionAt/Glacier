@@ -135,7 +135,7 @@ public class Glacier extends JavaPlugin {
         long hash_X = (long)(x + 32000000) & 0x0fffffff;
         long hash_Y = (long)y & 0xff;
         long hash_Z = (long)(x + 32000000) & 0x0fffffff;
-        return (hash_X << 28) | (hash_Y << 58) | hash_Z;
+        return (hash_X << 28) | (hash_Y << 56) | hash_Z;
     }
     public Long hashLocation(Location l){
         return hashLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ());
