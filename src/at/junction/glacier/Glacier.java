@@ -26,7 +26,7 @@ public class Glacier extends JavaPlugin {
     LiquidTable lt = new LiquidTable(this);
     //List<Location> frozenBlocks = new ArrayList<>();
     Map<String, HashSet<Long>> frozenBlocks = new HashMap<>();
-    List<String> frozenPlayers = new ArrayList<>();
+    HashSet<String> frozenPlayers = new HashSet<>();
     WorldGuardPlugin wg;
     
     @Override
