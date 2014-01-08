@@ -92,17 +92,23 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (plugin.config.FREEZE_LAVA && event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET && !event.getPlayer().hasPermission("glacier.flowing")) { // If we have lava set to simply freeze.
+        if (plugin.frozenPlayers.contains(event.getPlayer().getName())){
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
             return;
         }
-
-        if (plugin.frozenPlayers.contains(event.getPlayer().getName()) || (!plugin.hasRegion(event.getBlockClicked().getRelative(event.getBlockFace())) || !plugin.isBlockRegionMember(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName())) && !event.getPlayer().hasPermission("glacier.flowing")) {
-            plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
-        } else {
-            if (plugin.frozenBlocks.get(event.getBlockClicked().getWorld().getName()).contains(plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation()))) {
-                plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
+        //If player has permissions and isn't frozen, let them place normally
+        if (event.getPlayer().hasPermission("glacier.flowing")){
+            return;
+        }
+        //If there is a region, and the player is a member of the region
+        if (plugin.hasRegion(event.getBlockClicked().getRelative(event.getBlockFace())) && plugin.isBlockRegionMember(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName())){
+            //If we always freeze lava, still freeze it
+            if (plugin.config.FREEZE_LAVA && event.getBucket() == Material.LAVA_BUCKET){
+                plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
+                return;
             }
+            //Flow it
+            return;
         }
     }
 }
