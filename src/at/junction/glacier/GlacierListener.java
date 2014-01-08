@@ -81,15 +81,20 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
+        if (plugin.config.DEBUG){
+            plugin.getLogger().info(String.format("Filled bucket at %s", event.getBlockClicked().getRelative(event.getBlockFace()).getLocation()));
+        }
         Material mat = event.getItemStack().getType();
         if (mat == Material.LAVA_BUCKET || mat == Material.WATER_BUCKET) {
-            Location loc = event.getBlockClicked().getRelative(event.getBlockFace()).getLocation();
             plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+        if (plugin.config.DEBUG){
+            plugin.getLogger().info(String.format("Empty bucket at %s", event.getBlockClicked().getRelative(event.getBlockFace())));
+        }
         if (plugin.frozenPlayers.contains(event.getPlayer().getName())){
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
             return;
