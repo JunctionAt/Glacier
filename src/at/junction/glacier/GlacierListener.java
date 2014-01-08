@@ -21,9 +21,9 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        //Only moderators should have these 4 blocks...Just in case, freeze if someone else gets them.
+        //Only moderators should have these 4 blocks...Flow them if moderator isn't frozen
         if (event.getBlock().isLiquid()) {
-            if (event.getPlayer().hasPermission("glacier.flowing")){
+            if (event.getPlayer().hasPermission("glacier.flowing") && !plugin.frozenPlayers.contains(event.getPlayer().getName())){
                 return;
             } else {
                 plugin.newFrozen(event.getBlock());
