@@ -7,6 +7,9 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import java.io.File;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,8 +27,9 @@ public class Glacier extends JavaPlugin {
     GlacierListener listener = new GlacierListener(this);
     Configuration config = new Configuration(this);
     LiquidTable lt = new LiquidTable(this);
-    List<Location> frozenBlocks = new ArrayList<>();
-    List<String> frozenPlayers = new ArrayList<>();
+    //List<Location> frozenBlocks = new ArrayList<>();
+    Map<String, HashSet<Long>> frozenBlocks = new HashMap<>();
+    HashSet<String> frozenPlayers = new HashSet<>();
     WorldGuardPlugin wg;
     
     @Override
@@ -92,12 +96,12 @@ public class Glacier extends JavaPlugin {
     }
     
     public void newFrozen(Block block) {
-        frozenBlocks.add(block.getLocation());
+        frozenBlocks.get(block.getWorld().getName()).add(hashLocation(block.getLocation()));
         lt.newFrozen(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
     }
     
     public void delFrozen(Location loc) {
-        frozenBlocks.remove(loc);
+        frozenBlocks.get(loc.getWorld().getName()).remove(hashLocation(loc));
         lt.delFrozen(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
     
@@ -125,5 +129,15 @@ public class Glacier extends JavaPlugin {
         }
 
         return fIDs.equals(tIDs);
+    }
+
+    public Long hashLocation(int x, int y, int z){
+        long hash_X = (long)(x + 32000000) & 0x0fffffff;
+        long hash_Y = (long)y & 0xff;
+        long hash_Z = (long)(x + 32000000) & 0x0fffffff;
+        return (hash_X << 28) | (hash_Y << 56) | hash_Z;
+    }
+    public Long hashLocation(Location l){
+        return hashLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 }

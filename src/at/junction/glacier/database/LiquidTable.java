@@ -2,9 +2,13 @@ package at.junction.glacier.database;
 
 import at.junction.glacier.Glacier;
 import com.avaje.ebean.Query;
-import java.util.ArrayList;
+
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import org.bukkit.Location;
+
+import org.bukkit.World;
 
 public class LiquidTable {
     Glacier plugin;
@@ -31,15 +35,18 @@ public class LiquidTable {
         plugin.getDatabase().delete(query.findUnique());
     }
     
-    public ArrayList<Location> getFrozen() {
-        ArrayList<Location> ret = new ArrayList<>();
+    public Map<String, HashSet<Long>> getFrozen(){
+        Map<String, HashSet<Long>> frozenBlocks = new HashMap<>();
         List<Liquid> query = plugin.getDatabase().find(Liquid.class).findList();
-        
-        for(Liquid l : query) {
-            Location loc = new Location(plugin.getServer().getWorld(l.getWorld()), l.getX(), l.getY(), l.getZ());
-            ret.add(loc);
+
+        for (World w : plugin.getServer().getWorlds()){
+            frozenBlocks.put(w.getName(), new HashSet<Long>());
         }
-        
-        return ret;
+
+        for (Liquid l : query) {
+            frozenBlocks.get(l.getWorld()).add(plugin.hashLocation(l.getX(), l.getY(), l.getZ()));
+        }
+
+        return frozenBlocks;
     }
 }
