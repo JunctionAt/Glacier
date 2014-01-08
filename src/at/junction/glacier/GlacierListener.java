@@ -20,22 +20,11 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getBlock().isLiquid()) { // If the block is liquid.
-            if (plugin.config.FREEZE_LAVA && event.getBlock().getType() == Material.LAVA && !event.getPlayer().hasPermission("glacier.flowing")) { // If we have lava set to simply freeze.
-                plugin.newFrozen(event.getBlock());
+        if (event.getBlock().isLiquid()) { // If the block is liquid. Should only matter for mods...
+            if (event.getPlayer().hasPermission("glacier.flowing")){
                 return;
-            }
-
-            if (plugin.frozenPlayers.contains(event.getPlayer().getName()) || (!plugin.hasRegion(event.getBlock()) || !plugin.isBlockRegionMember(event.getBlock(), event.getPlayer().getName())) && !event.getPlayer().hasPermission("glacier.flowing")) { // If the player doesn't have the permission or isn't a member of the regions.
+            } else {
                 plugin.newFrozen(event.getBlock());
-            } else { // If the player DOES have the permission and is a member of the regions.
-                if (plugin.frozenBlocks.get(event.getBlock().getWorld().getName()).contains(plugin.hashLocation(event.getBlock().getLocation()))) {
-                    plugin.delFrozen(event.getBlock().getLocation());
-                }
-            }
-        } else { // If the block is not liquid, it might be replacing an old liquid. Check.
-            if (plugin.frozenBlocks.get(event.getBlock().getWorld().getName()).contains(plugin.hashLocation(event.getBlock().getLocation()))) {
-                plugin.delFrozen(event.getBlock().getLocation());
             }
         }
     }
