@@ -19,7 +19,13 @@ public class Liquid implements Serializable {
     
     @NotNull
     private String world;
-    
+
+    public Liquid(String world, int x, int y, int z){
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
     
     public void setId(int id) {
         this.id = id;
