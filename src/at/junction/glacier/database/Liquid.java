@@ -20,6 +20,8 @@ public class Liquid implements Serializable {
     @NotNull
     private String world;
 
+    public Liquid(){}
+
     public Liquid(String world, int x, int y, int z){
         this.world = world;
         this.x = x;
