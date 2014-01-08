@@ -100,6 +100,9 @@ public class Glacier extends JavaPlugin {
     public void newFrozen(Block block) {
         long hash = hashLocation(block.getLocation());
         if (!frozenBlocks.get(block.getWorld().getName()).contains(hash)){
+            if (config.DEBUG){
+                getLogger().info(String.format("Adding block at %s to database & cache", block.getLocation()));
+            }
             frozenBlocks.get(block.getWorld().getName()).add(hash);
             lt.newFrozen(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
         }
@@ -108,6 +111,9 @@ public class Glacier extends JavaPlugin {
     public void delFrozen(Location loc) {
         long hash = hashLocation(loc);
         if (frozenBlocks.get(loc.getWorld().getName()).contains(hash)){
+            if (config.DEBUG){
+                getLogger().info(String.format("Removing block at %s from database", loc));
+            }
             frozenBlocks.get(loc.getWorld().getName()).remove(hashLocation(loc));
             lt.delFrozen(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         }

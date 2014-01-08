@@ -5,6 +5,7 @@ class Configuration {
 
     public boolean FREEZE_LAVA;
     public boolean ALLOW_TOGGLE;
+    public boolean DEBUG;
 
     public Configuration(Glacier plugin) {
         this.plugin = plugin;
@@ -13,6 +14,7 @@ class Configuration {
     public void load() {
         FREEZE_LAVA = plugin.getConfig().getBoolean("freeze-lava", true);
         ALLOW_TOGGLE = plugin.getConfig().getBoolean("allow-toggle", true);
+        DEBUG = plugin.getConfig().getBoolean("debug", false);
     }
 
     public void save() {
