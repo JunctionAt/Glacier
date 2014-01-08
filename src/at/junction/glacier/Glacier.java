@@ -107,13 +107,12 @@ public class Glacier extends JavaPlugin {
         lt.delFrozen(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
-    public boolean hasRegion(Block block) {
-        return wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).size() != 0;
-    }
+    public boolean canPlaceFlowingLiquid(Block block, String playerName){
+        LocalPlayer pl = wg.wrapPlayer(getServer().getPlayer(playerName));
+        //Returns true if block has a region AND player is member of all regions
+        return (wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).size() != 0
+                && wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).isMemberOfAll(pl));
 
-    public boolean isBlockRegionMember(Block block, String player) {
-        LocalPlayer pl = wg.wrapPlayer(getServer().getPlayer(player));
-        return wg.getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).isMemberOfAll(pl);
     }
 
     public boolean canFlowInRegion(Block fromBlock, Block toBlock) { // There has *got* to be a better way... Calling all pull requests.

@@ -101,7 +101,7 @@ class GlacierListener implements Listener {
             return;
         }
         //If there is a region, and the player is a member of the region
-        if (plugin.hasRegion(event.getBlockClicked().getRelative(event.getBlockFace())) && plugin.isBlockRegionMember(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName())){
+        if (plugin.canPlaceFlowingLiquid(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName())){
             //If we always freeze lava, still freeze it
             if (plugin.config.FREEZE_LAVA && event.getBucket() == Material.LAVA_BUCKET){
                 plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
