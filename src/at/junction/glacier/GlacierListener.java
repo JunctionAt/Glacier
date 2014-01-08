@@ -42,10 +42,6 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
-        //If flowing INTO a frozen block, remove block's static-icity
-        if (plugin.frozenBlocks.get(event.getToBlock().getLocation().getWorld().getName()).contains(plugin.hashLocation(event.getToBlock().getLocation()))){
-            plugin.delFrozen(event.getToBlock().getLocation());
-        }
         if (plugin.frozenBlocks.get(event.getBlock().getWorld().getName()).contains(plugin.hashLocation(event.getBlock().getLocation()))) {
             event.setCancelled(true);
             return;
@@ -53,7 +49,14 @@ class GlacierListener implements Listener {
 
         if (!plugin.canFlowInRegion(event.getBlock(), event.getToBlock())) {
             event.setCancelled(true);
+            return;
         }
+
+        //At this point things should be allowed to flow. If it flows into a static block, remove the static block.
+        if (plugin.frozenBlocks.get(event.getToBlock().getLocation().getWorld().getName()).contains(plugin.hashLocation(event.getToBlock().getLocation()))){
+            plugin.delFrozen(event.getToBlock().getLocation());
+        }
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
