@@ -1,5 +1,6 @@
 package at.junction.glacier;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,8 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getBlock().isLiquid()) { // If the block is liquid. Should only matter for mods...
+        //Only moderators should have these 4 blocks...Just in case, freeze if someone else gets them.
+        if (event.getBlock().isLiquid()) {
             if (event.getPlayer().hasPermission("glacier.flowing")){
                 return;
             } else {
@@ -81,7 +83,10 @@ class GlacierListener implements Listener {
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
         Material mat = event.getItemStack().getType();
         if (mat == Material.LAVA_BUCKET || mat == Material.WATER_BUCKET) {
-            plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
+            Location loc = event.getBlockClicked().getRelative(event.getBlockFace()).getLocation();
+            if (plugin.frozenBlocks.get(event.getBlockClicked().getWorld()).contains(plugin.hashLocation(loc))){
+                plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
+            }
         }
     }
 
