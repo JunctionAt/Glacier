@@ -83,6 +83,8 @@ class GlacierListener implements Listener {
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
         if (plugin.config.DEBUG){
             plugin.getLogger().info(String.format("Filled bucket at %s", event.getBlockClicked().getRelative(event.getBlockFace()).getLocation()));
+            plugin.getLogger().info(String.format("Hash %l", plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())));
+
         }
         Material mat = event.getItemStack().getType();
         if (mat == Material.LAVA_BUCKET || mat == Material.WATER_BUCKET) {
@@ -94,6 +96,7 @@ class GlacierListener implements Listener {
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         if (plugin.config.DEBUG){
             plugin.getLogger().info(String.format("Empty bucket at %s", event.getBlockClicked().getRelative(event.getBlockFace())));
+            plugin.getLogger().info(String.format("Hash %l", plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())));
         }
         if (plugin.frozenPlayers.contains(event.getPlayer().getName())){
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
