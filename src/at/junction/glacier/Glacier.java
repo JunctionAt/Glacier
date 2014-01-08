@@ -98,13 +98,19 @@ public class Glacier extends JavaPlugin {
     }
 
     public void newFrozen(Block block) {
-        frozenBlocks.get(block.getWorld().getName()).add(hashLocation(block.getLocation()));
-        lt.newFrozen(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+        long hash = hashLocation(block.getLocation());
+        if (!frozenBlocks.get(block.getWorld().getName()).contains(hash)){
+            frozenBlocks.get(block.getWorld().getName()).add(hash);
+            lt.newFrozen(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+        }
     }
 
     public void delFrozen(Location loc) {
-        frozenBlocks.get(loc.getWorld().getName()).remove(hashLocation(loc));
-        lt.delFrozen(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        long hash = hashLocation(loc);
+        if (frozenBlocks.get(loc.getWorld().getName()).contains(hash)){
+            frozenBlocks.get(loc.getWorld().getName()).remove(hashLocation(loc));
+            lt.delFrozen(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        }
     }
 
     public boolean canPlaceFlowingLiquid(Block block, String playerName){

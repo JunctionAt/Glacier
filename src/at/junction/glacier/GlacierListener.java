@@ -84,9 +84,7 @@ class GlacierListener implements Listener {
         Material mat = event.getItemStack().getType();
         if (mat == Material.LAVA_BUCKET || mat == Material.WATER_BUCKET) {
             Location loc = event.getBlockClicked().getRelative(event.getBlockFace()).getLocation();
-            if (plugin.frozenBlocks.get(event.getBlockClicked().getWorld()).contains(plugin.hashLocation(loc))){
-                plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
-            }
+            plugin.delFrozen(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation());
         }
     }
 
