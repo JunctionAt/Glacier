@@ -1,7 +1,7 @@
 name: Glacier
-version: 1.5.1-1
-description: Multiplayer-friendly liquids.
-author: SyntaxNode
+version: 1.7.2-2
+description: Efficient multiplayer-friendly liquids.
+author: [SyntaxNode, zifnab06]
 website: http://junction.at/
 
 main: at.junction.glacier.Glacier
