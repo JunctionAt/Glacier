@@ -10,6 +10,9 @@ import java.util.List;
 
 import org.bukkit.World;
 
+//Note - LiquidTable stores X/Y/Z coords and rehashes them upon load
+//Leave it this way - do NOT store the hash
+//We may want to change the hashing method later on
 public class LiquidTable {
     Glacier plugin;
 

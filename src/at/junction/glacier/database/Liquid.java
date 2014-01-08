@@ -10,6 +10,10 @@ import javax.persistence.Table;
 @Entity()
 @Table(name = "liquids")
 
+
+//Note - Liquid stores X/Y/Z coords and glacier rehashes them upon load
+//Leave it this way - do NOT store the hash
+//We may want to change the hashing method later on
 public class Liquid implements Serializable {
 
     @Id
