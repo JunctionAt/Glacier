@@ -1,6 +1,5 @@
 package at.junction.glacier;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -21,11 +20,9 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        //Only moderators should have these 4 blocks...Flow them if moderator isn't frozen
+        //Only moderators should have water/lava blocks. THIS IS NOT BUCKETS, ONLY WATER/LAVA BLOCK ITEMS.
         if (event.getBlock().isLiquid()) {
-            if (event.getPlayer().hasPermission("glacier.flowing") && !plugin.frozenPlayers.contains(event.getPlayer().getName())){
-                return;
-            } else {
+            if (!(event.getPlayer().hasPermission("glacier.flowing") && !plugin.frozenPlayers.contains(event.getPlayer().getName()))) {
                 plugin.newFrozen(event.getBlock());
             }
         }
@@ -43,17 +40,13 @@ class GlacierListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         if (plugin.frozenBlocks.get(event.getBlock().getWorld().getName()).contains(plugin.hashLocation(event.getBlock().getLocation()))) {
+            //If FROM is frozen, cancel event
             event.setCancelled(true);
-            return;
-        }
-
-        if (!plugin.canFlowInRegion(event.getBlock(), event.getToBlock())) {
+        } else if (!plugin.canFlowInRegion(event.getBlock(), event.getToBlock())) {
+            //If all regions in FROM do NOT match all regions in TO, cancel event
             event.setCancelled(true);
-            return;
-        }
-
-        //At this point things should be allowed to flow. If it flows into a static block, remove the static block.
-        if (plugin.frozenBlocks.get(event.getToBlock().getLocation().getWorld().getName()).contains(plugin.hashLocation(event.getToBlock().getLocation()))){
+        } else if (plugin.frozenBlocks.get(event.getToBlock().getLocation().getWorld().getName()).contains(plugin.hashLocation(event.getToBlock().getLocation()))) {
+            //If TO is in frozenBlocks, remove TO from frozenBlocks and allow it to flow.
             plugin.delFrozen(event.getToBlock().getLocation());
         }
 
@@ -65,6 +58,7 @@ class GlacierListener implements Listener {
 
         if (mat == Material.STATIONARY_LAVA || mat == Material.STATIONARY_WATER) {
             if (plugin.frozenBlocks.get(event.getBlock().getWorld().getName()).contains(plugin.hashLocation(event.getBlock().getLocation()))) {
+                //If a block is frozen, do not allow it to flow.
                 event.setCancelled(true);
             }
         }
@@ -88,7 +82,7 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
-        if (plugin.config.DEBUG){
+        if (plugin.config.DEBUG) {
             plugin.getLogger().info(String.format("Filled bucket at %s", event.getBlockClicked().getRelative(event.getBlockFace()).getLocation()));
             plugin.getLogger().info(String.format("Hash %s", plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())));
 
@@ -101,27 +95,21 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (plugin.config.DEBUG){
+        if (plugin.config.DEBUG) {
             plugin.getLogger().info(String.format("Empty bucket at %s", event.getBlockClicked().getRelative(event.getBlockFace())));
             plugin.getLogger().info(String.format("Hash %s", plugin.hashLocation(event.getBlockClicked().getRelative(event.getBlockFace()).getLocation())));
         }
-        if (plugin.frozenPlayers.contains(event.getPlayer().getName())){
+
+        if (plugin.frozenPlayers.contains(event.getPlayer().getName())) {
+            //If player is frozen, place frozen block
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
-            return;
-        }
-        //If player has permissions and isn't frozen, let them place normally
-        if (event.getPlayer().hasPermission("glacier.flowing")){
-            return;
-        }
-        //If there is a region, and the player is a member of the region
-        if (plugin.canPlaceFlowingLiquid(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName())){
-            //If we always freeze lava, still freeze it
-            if (plugin.config.FREEZE_LAVA && event.getBucket() == Material.LAVA_BUCKET){
-                plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
-                return;
-            }
-            //Flow it
-            return;
-        }
+        } else if (!event.getPlayer().hasPermission("glacier.flowing") && (!plugin.canPlaceFlowingLiquid(event.getBlockClicked().getRelative(event.getBlockFace()), event.getPlayer().getName()))) {
+            //If player does not have permission AND cannot place a block, freeze it
+            plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
+        } else if (plugin.config.FREEZE_LAVA && event.getBucket() == Material.LAVA_BUCKET) {
+            //If we always freeze lava, freeze it regardless of previous statements
+            plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
+        } //Implied 'else flow'
     }
 }
+
