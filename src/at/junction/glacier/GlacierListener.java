@@ -40,13 +40,21 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
-        if (plugin.config.BLOCK_WATER_DESTROY_LIST.contains(event.getToBlock().getType())){
+        String world = event.getToBlock().getWorld().getName();
+        Long from = plugin.hashLocation(event.getBlock().getLocation());
+        Long to = plugin.hashLocation(event.getToBlock().getLocation());
+        if (plugin.frozenBlocks.get(world).contains(from)) {
+            //If block is frozen, CANCEL EVENT
+            event.setCancelled(true);
+        } else if (plugin.config.BLOCK_WATER_DESTROY_LIST.contains(event.getToBlock().getType())){
+            //If TO is in blocked list, cancel event
             event.setCancelled(true);
         } else if (!plugin.canFlowInRegion(event.getBlock(), event.getToBlock())) {
             //If all regions in FROM do NOT match all regions in TO, cancel event
             event.setCancelled(true);
-        } else if (plugin.frozenBlocks.get(event.getToBlock().getLocation().getWorld().getName()).contains(plugin.hashLocation(event.getToBlock().getLocation()))) {
-            //If TO is in frozenBlocks, remove TO from frozenBlocks and allow it to flow.
+        }
+
+        if (plugin.frozenBlocks.get(world).contains(to)){
             plugin.delFrozen(event.getToBlock().getLocation());
         }
     }
