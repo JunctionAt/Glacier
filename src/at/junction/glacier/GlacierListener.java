@@ -89,7 +89,9 @@ class GlacierListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-        if (plugin.frozenPlayers.contains(event.getPlayer().getName())) {
+        if (plugin.config.BLOCK_WATER_DESTROY_LIST.contains(event.getBlockClicked())){
+            event.setCancelled(true);
+        } else if (plugin.frozenPlayers.contains(event.getPlayer().getName())) {
             //If player is frozen, place frozen block
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
         } else if (plugin.config.FREEZE_LAVA && event.getBucket() == Material.LAVA_BUCKET) {
