@@ -52,9 +52,7 @@ class GlacierListener implements Listener {
         } else if (!plugin.canFlowInRegion(event.getBlock(), event.getToBlock())) {
             //If all regions in FROM do NOT match all regions in TO, cancel event
             event.setCancelled(true);
-        }
-
-        if (plugin.frozenBlocks.get(world).contains(to)){
+        } else if (plugin.frozenBlocks.get(world).contains(to)){
             plugin.delFrozen(event.getToBlock().getLocation());
         }
     }
@@ -64,7 +62,9 @@ class GlacierListener implements Listener {
         Material mat = event.getBlock().getType();
 
         if (mat == Material.STATIONARY_LAVA || mat == Material.STATIONARY_WATER) {
-            if (plugin.frozenBlocks.get(event.getBlock().getWorld().getName()).contains(plugin.hashLocation(event.getBlock().getLocation()))) {
+            String world = event.getBlock().getWorld().getName();
+            Long hash = plugin.hashLocation(event.getBlock().getLocation());
+            if (plugin.frozenBlocks.get(world).contains(hash)) {
                 //If a block is frozen, do not allow it to flow.
                 event.setCancelled(true);
             }
