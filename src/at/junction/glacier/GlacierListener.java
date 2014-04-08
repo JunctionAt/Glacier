@@ -2,6 +2,7 @@ package at.junction.glacier;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,6 +10,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 
 class GlacierListener implements Listener {
@@ -98,6 +100,16 @@ class GlacierListener implements Listener {
             //If we always freeze lava, freeze it regardless of previous statements
             plugin.newFrozen(event.getBlockClicked().getRelative(event.getBlockFace()));
         } //Implied 'else flow'
+    }
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEvent event){
+        Player p = event.getPlayer();
+        if ((p.getItemInHand().getType() == Material.LAVA_BUCKET) ||
+                (p.getItemInHand().getType() == Material.WATER_BUCKET)){
+            if (plugin.config.BLOCK_WATER_DESTROY_LIST.contains(event.getClickedBlock().getType())){
+                event.setCancelled(true);
+            }
+        }
     }
 }
 
