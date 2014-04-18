@@ -27,6 +27,8 @@ class GlacierListener implements Listener {
         if (event.getBlock().isLiquid()) {
             if (plugin.frozenPlayers.contains(event.getPlayer().getName())) {
                 plugin.newFrozen(event.getBlock());
+            } else if (event.getPlayer().hasPermission("glacier.flowing")) {
+                plugin.delFrozen(event.getBlock().getLocation());
             }
         }
     }
