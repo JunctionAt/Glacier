@@ -34,15 +34,6 @@ class GlacierListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
-        if (event.getBlock().getType() == Material.ICE) {
-            if (!event.getPlayer().getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                plugin.newFrozen(event.getBlock());
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         String world = event.getToBlock().getWorld().getName();
         Long from = plugin.hashLocation(event.getBlock().getLocation());
